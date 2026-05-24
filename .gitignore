@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Env files
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+staticfiles/
+# media/    # uncomment ONLY if you want to keep test images out; media/ is part of the seeded demo
+
+# Build
+*.egg-info/
+dist/
+build/

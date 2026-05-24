@@ -1,6 +1,5 @@
-from random import random
+import random
 
-import comments as comments
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
