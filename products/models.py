@@ -26,7 +26,7 @@ def upload_image_path(instance, filename):
 
 
 class Categoria(models.Model):
-    nome = models.CharField(max_length=255, null=False,blank=False)
+    nome = models.CharField(max_length=255, null=False, blank=False, db_index=True)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 
     def __str__(self):
@@ -37,10 +37,10 @@ class Prodotti(models.Model):
     owner = models.ForeignKey(Owner, related_name='prodotti', on_delete=models.PROTECT)
     categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
     #la related name la uso qui per fare subito delle operazioni sul DB
-    name = models.CharField(max_length=255,)
+    name = models.CharField(max_length=255, db_index=True)
     dimensione = models.CharField(max_length=255, default=None)
-    tipo_materiale = models.CharField(max_length=255,default=None)
-    price = models.CharField(max_length=255)
+    tipo_materiale = models.CharField(max_length=255, default=None, db_index=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 
@@ -82,4 +82,3 @@ class Report(models.Model):
 
     def __str__(self):
         return self.text
-

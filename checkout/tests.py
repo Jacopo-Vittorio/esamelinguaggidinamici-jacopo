@@ -21,7 +21,7 @@ class CheckoutFormTest(TestCase):
             cls.cat = Categoria.objects.create(nome='Buste', image='media/products/36958002/36958002.jpg')
             cls.cat2 = Categoria.objects.create(nome='Cartone', image='media/products/36958002/36958002.jpg')
             cls.prod = Prodotti.objects.create(owner=cls.fo1, categoria=cls.cat, name='Sacchetto Naturale',
-                                               dimensione='30x10cm', tipo_materiale='plastica', price='0.70€',
+                                               dimensione='30x10cm', tipo_materiale='plastica', price='0.70',
                                                image='media/products/36958002/36958002.jpg')
 
     def test_ProductForm_invalid(self):

@@ -47,7 +47,12 @@ class ListaRichieste(ListView):
     def get_queryset(self):
         user = self.request.user
 
-        qs = self.model.objects.filter(product__owner__user=user).order_by('order__created')
+        qs = self.model.objects.select_related(
+            'order',
+            'product',
+            'product__owner__user',
+            'product__categoria',
+        ).filter(product__owner__user=user).order_by('order__created')
 
         return qs
 
@@ -61,10 +66,17 @@ class DetailOrder(DetailView):
     template_name ="checkout/detail_ordine.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(OrderItem, pk=self.kwargs.get('pk'))
+        return get_object_or_404(
+            OrderItem.objects.select_related(
+                'order',
+                'product',
+                'product__owner__user',
+                'product__categoria',
+            ),
+            pk=self.kwargs.get('pk'),
+        )
 
 class DeleteOrder(DeleteView):
     model = OrderItem
     template_name ="checkout/delete_prod_order.html"
     success_url = reverse_lazy('homepage')
-

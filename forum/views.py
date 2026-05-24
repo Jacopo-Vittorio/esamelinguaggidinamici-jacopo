@@ -18,6 +18,7 @@ class ThreadList(ListView):
     model = Forum
     template_name = 'forum/lista_thread.html'
     context_object_name = 'lista_thread'
+    queryset = Forum.objects.select_related('fornitore__user', 'user__user')
 
 
 class RispostaList(DetailView):
@@ -25,7 +26,12 @@ class RispostaList(DetailView):
     template_name = "forum/discussione.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Forum, pk=self.kwargs.get('pk'))
+        return get_object_or_404(
+            Forum.objects
+            .select_related('fornitore__user', 'user__user')
+            .prefetch_related('risposta'),
+            pk=self.kwargs.get('pk'),
+        )
 
 
 @method_decorator([login_required,client_required],name='dispatch')

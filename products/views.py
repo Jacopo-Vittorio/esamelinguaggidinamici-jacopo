@@ -39,16 +39,26 @@ def CategoriaView(request):
 class ProdottiList(ListView):
     model = Prodotti
     template_name = 'products/list.html'
+    queryset = Prodotti.objects.select_related('owner__user', 'categoria')
 
 
 # class ProdottiDetail(DetailView):
 #     model = Prodotti
 #     template_name = 'products/products_detail.html'
 def product_related(request, pk):
-        product = Prodotti.objects.get(id=pk)
+        product = get_object_or_404(
+            Prodotti.objects
+            .select_related('owner__user', 'categoria')
+            .prefetch_related('recensioni__user__user'),
+            id=pk,
+        )
         cart_product_form = CartAddProductForm()
-        related_products = Prodotti.objects.filter(categoria=product.categoria).exclude(id=product.id)
-        print(related_products)
+        related_products = list(
+            Prodotti.objects
+            .select_related('owner__user', 'categoria')
+            .filter(categoria=product.categoria)
+            .exclude(id=product.id)
+        )
         if len(related_products) >= 3:
             related_products = random.sample(related_products, 3)
 
@@ -138,24 +148,21 @@ class SearchView(ListView):
     context_object_name = 'search_list'
     success_url = reverse_lazy('prod:products-category')
     def get_queryset(self):
-
-
-            nome= self.request.GET.get('nome')
-            material=self.request.GET.get('material')
+            qs = self.model.objects.select_related('owner__user', 'categoria')
+            nome = self.request.GET.get('nome')
+            material = self.request.GET.get('material')
             min_price = self.request.GET.get('min_price')
             max_price = self.request.GET.get('max_price')
-            if nome and material:
-                                if min_price:
-                                                if max_price:
-                                                            qs = self.model.objects.filter(name__icontains=nome,tipo_materiale__icontains=material,price__gte=min_price,price__lte=max_price).order_by('-price')
-                                                else:
-                                                            qs = self.model.objects.filter(name__icontains=nome,tipo_materiale__icontains=material ,price__gte=min_price).order_by('-price')
-                                else:
-                                                             qs = self.model.objects.filter(name__icontains=nome,tipo_materiale__icontains=material).order_by('-price')
 
-            else:
-                        qs= self.model.objects.all()
-            return qs
+            if nome:
+                qs = qs.filter(name__icontains=nome)
+            if material:
+                qs = qs.filter(tipo_materiale__icontains=material)
+            if min_price:
+                qs = qs.filter(price__gte=min_price)
+            if max_price:
+                qs = qs.filter(price__lte=max_price)
+            return qs.order_by('-price')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(SearchView,self).get_context_data(**kwargs)
@@ -177,11 +184,11 @@ class ListaProdFornitore(ListView):
     def get_queryset(self):
         nome = self.request.GET.get('nome')
         user = self.request.user.username
-        categoria = self.request.GET.get('categoria')
+        qs = self.model.objects.select_related('owner__user', 'categoria').filter(
+            owner__user__username=user
+        )
         if nome :
-            qs = self.model.objects.filter(owner__user__username=user,name__icontains=nome)
-        else:
-            qs = self.model.objects.filter(owner__user__username=user)
+            qs = qs.filter(name__icontains=nome)
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -203,10 +210,14 @@ class ListaRevCliente(ListView):
         nome = self.request.GET.get('nome')
         user = self.request.user.username
 
+        qs = self.model.objects.select_related(
+            'user__user',
+            'prodotto',
+            'prodotto__owner__user',
+            'prodotto__categoria',
+        ).filter(user__user__username=user)
         if nome:
-            qs = self.model.objects.filter(user__user__username=user,prodotto__name=nome )
-        else:
-            qs = self.model.objects.filter(user__user__username=user)
+            qs = qs.filter(prodotto__name=nome)
         return qs
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ListaRevCliente, self).get_context_data(**kwargs)
@@ -217,7 +228,12 @@ class ListaRevCliente(ListView):
         return context
 
 def product_detail(request, id):
-    product = get_object_or_404(Prodotti, id=id, available=True)
+    product = get_object_or_404(
+        Prodotti.objects
+        .select_related('owner__user', 'categoria')
+        .prefetch_related('recensioni__user__user'),
+        id=id,
+    )
     cart_product_form = CartAddProductForm()
     context = {'product': product, 'cart_product_form': cart_product_form}
     return render(request, 'products/products_detail.html', context)

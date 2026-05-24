@@ -16,10 +16,10 @@ class Cart():
 
     def add(self, product, quantity=1, update_quantity=False):
 
-        product_id = product.pk
+        product_id = str(product.pk)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': product.price}
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -62,6 +62,5 @@ class Cart():
 
         del self.session[settings.CART_SESSION_ID]
         self.save()
-
 
 
