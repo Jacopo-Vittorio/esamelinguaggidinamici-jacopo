@@ -1,0 +1,15 @@
+{%  extends 'base.html' %}
+
+{% block title %}Prodotti: sezione eliminazione{% endblock %}
+{% block content %}
+    <h1>Prodotti da eliminare</h1>
+    <h2>Stai decidendo di eliminare questo prodotto , sei sicuro ?</h2>
+    <h1>{{ object.name}}</h1>
+    <h3>{{ object.owner }}</h3>
+    <p>{{ object.description }}</p>
+    <form method="post">{%  csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'prod:products-detail' object.pk %}">annulla</a>
+        <input type="submit" value="Confirm">
+    </form>
+{% endblock %}

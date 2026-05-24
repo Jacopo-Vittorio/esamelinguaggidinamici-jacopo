@@ -1,0 +1,25 @@
+{%  extends 'base.html' %}
+
+{% block title %}  {%  block list_title %}{% endblock %}{% endblock %}
+
+{% block content %}
+    <h1>  {% block content_title %}{% endblock %}</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            {%  block thead  %}   <!-- qui andrò a metter le righe di intestazione della mia tabella -->
+
+            {% endblock %}
+        </tr>
+        </thead>
+        <tbody> <!-- al momento nel body ho 4 campi per le celle. Però come facciamo quando le righe cambiano)? metto block tbody -->
+        {%  block tbody  %}
+
+        {% endblock %}
+        </tbody>
+    </table>
+    {% block table_after %}
+
+    {%  endblock %}
+
+{% endblock %}

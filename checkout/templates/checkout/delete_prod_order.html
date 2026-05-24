@@ -1,0 +1,14 @@
+{%  extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Prodotti: sezione eliminazione {% endblock %}
+{% block content %}
+    <h1>Prodotto  da eliminare</h1>
+    <h2>Stai decidendo di eliminare {{ object.product.name }} dall'ordine {{ object.order.id }} , sei sicuro ?</h2>
+
+    <form method="post">{%  csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'homepage' %}">annulla</a>
+        <input type="submit" value="Confirm">
+    </form>
+{% endblock %}

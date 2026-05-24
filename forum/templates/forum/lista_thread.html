@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1></h1>
+    <h2>FORUM</h2>
+    <br>
+
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Fornitore</th>
+                <th>Utente</th>
+                <th>Descrizione</th>
+                <th>Discussione</th>
+
+            </tr>
+            </thead>
+            {% for object in lista_thread %}
+                <tr></tr>
+                    <td>{{ object.titolo }}</td>
+                    <td>{{ object.fornitore }}</td>
+                    <td>{{ object.user }}</td>
+                    <td>{{ object.descrizione }}</td>
+                    <td><a href="{% url 'forum:discussione' object.pk  %}" class="btn btn-danger m-1"> Discussione </a></td>
+                </tr>
+            {% endfor %}
+             {%  if user.is_authenticated and user.is_client%}
+            <a href="{%  url 'forum:thread-create' %}" class="btn btn-primary">Nuovo thread</a>
+            {%  endif %}
+        </table>
+    </form>
+{% endblock %}

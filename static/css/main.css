@@ -1,0 +1,22 @@
+body {
+    background-color: beige;
+}
+
+.context {
+    max-width: 500px;
+    margin: auto;
+}
+
+h1, h2, h3,h4,h5,h6, p {
+    text-align: center;
+
+}
+.fa fa-star text-warning{
+  /* match the "base" state to the background */
+  color: #fff;
+}
+
+.fa fa-star text-warning:hover {
+  /* on hover, change to your "actual" color */
+  color: #000;
+}

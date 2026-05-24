@@ -1,0 +1,62 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Dettagli di {{ object.name }}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+
+        <div class="row justify-content-center m-2">
+
+            {% if products %}
+
+                {% for product in products %}
+
+                    <div class="col-md-4">
+                        <div class="card m-3 p-2" style="width: 18rem; height: 33rem; box-shadow: 4px 4px #c291fa; border-radius: 25px 15px;">
+                            <img src="{{ product.image.url }}" style="height: 200px; width: 200px;"  class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h4 style="font-size: 17px;" class="card-title mt-1">{{ product.name }}</h4>
+                                <h3 style="color: rgb(16, 52, 107)" class="card-subtitle mt-1">{{ product.price }}€</h3>
+                                <hr>
+                                <p style="font-size: 13px;" class="btn btn-warning"><b>{{ product.categoria.nome }}</b></p>
+                                <p style="font-size: 13px;" class="cart-text mt-1">{{ product.owner }}</p>
+                            </div>
+                            <span><a href="{% url 'prod:products-detail' product.pk  %}" style="background-color: #5707b3;" class="btn btn-primary m-1">Detail</a></span>
+                            {%  if user.is_authenticated and user.is_owner and products.owner == user.id %}
+                                <a href="{% url 'prod:products-update' products.pk %}"
+                                   class="btn btn-primary">update</a>
+                                <a href="{% url 'prod:products-delete' products.pk %}"
+                                   class="btn btn-primary">delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <br>
+            {% endif %}
+            <div class="col-md-4">
+                <br>
+                <h2>Seleziona una categoria</h2>
+                <br>
+                <hr>
+
+
+
+                {% for category in categories %}
+
+                    <li class="list-group-item">
+                        <a class="btn btn-primary" href="{% url 'prod:products-category' %}?category={{ category.nome }}">{{ category.nome }}</a>
+                    </li>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

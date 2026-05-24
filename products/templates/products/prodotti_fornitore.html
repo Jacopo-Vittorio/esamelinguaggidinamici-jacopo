@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Search</h1>
+    <h2>Gestione prodotti </h2>
+    <br>
+    <form method='GET'>
+        <p>
+
+           {{ form.nome }} "Cerca per nome"
+
+            <input class="button" type='submit' value="Search">
+        </p>
+        <br>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Immagine</th>
+                <th>Nome Prodotto</th>
+                <th>Fornitore</th>
+                <th>Categoria</th>
+                <th>Elimina</th>
+                <th>Modifica</th>
+            </tr>
+            </thead>
+            {% for p in prodotti_fornitore %}
+                <tr>
+                    <td> <img src="{{ p.image.url }}" style="height: 100px; width: 100px"; class="card-img-top" alt="..."></td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.owner }}</td>
+                    <td>{{ p.categoria }}</td>
+                    <td><a href="{% url 'prod:products-delete' p.pk %}" class="btn btn-danger m-1"> Delete </a></td>
+                    <td><a href="{% url 'prod:products-update' p.pk %}" class="btn btn-primary m-1"> Update </a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+{% endblock %}

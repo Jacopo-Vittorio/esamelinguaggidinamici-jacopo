@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+        <h1>Dati Cliente </h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Indirizzo</th>
+            <th>Città</th>
+            <th>CAP</th>
+            <th>Email</th>
+
+        </tr>
+        </thead>
+            <tr>
+                <td>{{ object.order.firs_name }}</td>
+                <td>{{ object.order.last_name }}</td>
+                <td>{{ object.order.address }}</td>
+                <td>{{ object.order.city }}</td>
+                <td>{{ object.order.postal_code }}</td>
+                <td>{{ object.order.email }}</td>
+            </tr>
+
+
+    </table>
+    </form>
+{% endblock %}

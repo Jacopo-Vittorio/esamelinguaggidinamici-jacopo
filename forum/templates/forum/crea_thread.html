@@ -1,0 +1,14 @@
+{%  extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Crezione Thread{% endblock %}
+
+{% block  content %}
+ {% if user.is_authenticated %}
+    <h1> Creazione nuovo thread</h1>
+        {% crispy form%}
+{% else %}
+    <h1> Effettua prima il login</h1>
+    <p>return to <a href="{% url "forum:thread-list" %}">Forum</a> </p>
+    {% endif %}
+{% endblock %}

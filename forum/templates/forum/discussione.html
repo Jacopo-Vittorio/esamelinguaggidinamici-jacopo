@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+        <h1> {{ object.titolo}} </h1>
+        <h2>{{  object.user}}</h2>
+        <br>
+        <p>{{ object.contenuto}}</p>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Utente</th>
+            <th>Commento</th>
+
+        </tr>
+        </thead>
+         {% for s in object.risposta.all %}
+            <tr>
+                <td>{{ s.user }}</td>
+                <td>{{ s.commento }}</td>
+            </tr>
+        {% endfor %}
+        {%  if user.is_authenticated %}
+            <a href="{%  url 'forum:crea-commento' pk=object.pk%}" class="btn btn-primary">Nuovo commento </a>
+        {% endif %}
+
+    </table>
+    </form>
+{% endblock %}

@@ -1,0 +1,90 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Dettagli di {{ object.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <a href="{% url 'prod:products-category' %}" class="btn btn-primary mt-2">Back</a>
+                <div class="card m-5 p-2" style="width: 25rem;">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title m-1"><b>Name:</b> {{ product.name }}</h5>
+                        <h4 class="card-subtitle m-1"><b>Price:</b> {{product.price }}€</h4>
+                        <p style="font-size: 14px;" class="btn btn-warning m-1 p-1">{{ product.category.nome }}</p>
+                        <hr>
+                        <p style="font-size: 15px;" class="card-text mt-1">Dimensione: {{ product.dimensione }} cm</p>
+                        <p style="font-size: 13px;" class="cart-text mt-1">Materiale : {{ product.tipo_materiale }}</p>
+                        {%  if user.is_authenticated and user.is_owner and product.owner == user.proprietario %}
+                            <a href="{% url 'prod:products-delete' product.pk %}" class="btn btn-danger m-1"> Delete </a>
+                            <a href="{% url 'prod:products-update' product.pk %}" class="btn btn-primary m-1"> Update </a>
+                        {% endif %}
+                        {%  if user.is_authenticated and user.is_client %}
+                            <a href="{% url 'prod:products-review' pk=product.pk %}"  class="btn btn-danger m-1"> Recensisci </a>
+                            <form action="{% url "cart:cart_add" product.pk %}" method="post">
+                                {% csrf_token %}
+                                {{ cart_product_form|crispy }}
+                                <input type="submit" class="buy-now btn btn-sm btn-primary" value="Add to cart">
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            </h3>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body review-list" style="max-height: 400px; overflow: auto;">
+                        <h4>RECENSIONI</h4>
+                        <!-- Detail -->
+
+                        {% if product.recensioni.all %}
+                            {% for recensione in product.recensioni.all %}
+                                <blockquote class="blockquote text-right">
+                                    {% if  user.is_authenticated %}
+                                        <small>{{ recensione.user }} <br> {{recensione.comment_name}}</small>
+                                        <footer class="blockquote-footer">{{recensione.comment_body}}
+                                    {% endif %}
+                                    <br>
+                                    <small>Voto al fornitore :{{ recensione.rating_fornitore }}</small>
+                                    <br>
+                                    <small>Voto al prodotto :{{ recensione.rating_prodotto }}</small>
+                                    </footer>
+                                </blockquote>
+
+                                <hr />
+
+                            {% endfor %}
+                        {% else %}
+                            <p class="no-data">Nessuna recensione</p>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <h3 class="mt-4 mb-3 border-bottom pb-1">Related Products</h3>
+            <br>
+            <div class="row">
+                {% for product in related %}
+                    <div class="card m-3 p-2" style="width: 13rem; height: 25rem; box-shadow: 4px 4px #c291fa; border-radius: 25px 15px;">
+                        <img src="{{ product.image.url }}" style="height: 170px; width: 170px;"  class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h4 style="font-size: 12px;" class="card-title mt-1">{{ product.name }}</h4>
+                            <h3 style="color: rgb(16, 52, 107)" class="card-subtitle mt-1">{{ product.price }}€</h3>
+                            <hr>
+                            <p style="font-size: 7px;" class="btn btn-warning"><b>{{ product.categoria.nome }}</b></p>
+                            <p style="font-size: 7px;" class="cart-text mt-1">{{ product.owner }}</p>
+                        </div>
+                        <span><a href="{% url 'prod:products-detail' product.id  %}" style="background-color: #5707b3;" class="btn btn-primary m-1">Detail</a></span>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}

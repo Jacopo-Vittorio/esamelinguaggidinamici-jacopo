@@ -1,0 +1,16 @@
+{%  extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Risposta : Create{% endblock %}
+
+{% block  content %}
+    {% if user.is_authenticated %}
+        <h1> Creazione nuova risposta</h1>
+
+            {% crispy form%}
+
+    {% else %}
+        <h1> Effettua prima il login</h1>
+        <p>return to <a href="{% url "forum:discussione" %}">Forum</a> </p>
+    {% endif %}
+{% endblock %}

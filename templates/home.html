@@ -1,0 +1,20 @@
+
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Benvenuti su CM-Forniture</h1>
+    <br>
+    <h5>CM-Forniture offre prodotti usa e getta per varie attività </h5>
+    <h5> </h5>
+    <h5>Trova il prodotto che ti interessa!</h5>
+    <br>
+    {% if user.is_authenticated %}
+        <h3>Bentornato <strong>{{ user.username }}!</strong></h3>
+    {% else %}
+        <h3>Benvenuto!</h3>
+    {% endif %}
+
+    <br>
+    <center>
+        {% load static %} <img src="{% static "img/beach.jpg" %}" alt="Buste idee" />
+    </center>
+{% endblock %}

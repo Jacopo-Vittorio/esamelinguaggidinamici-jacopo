@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Thank you
+{% endblock %}
+{% block content %}
+    <div class="container text-center mt-5 mb-5">
+        <h1>Grazie per il tuo ordine</h1>
+        <h3>Il tuo ordine è stato completato correttamente.Il tuo è l'ordine nuomero
+            <strong>{{ order.id }}</strong>.</h3>
+        <button onclick="window.location='{% url "prod:products-category" %}'" class="btn btn-primary btn-sm btn-block">Continua lo Shopping</button>
+    </div>
+{% endblock %}

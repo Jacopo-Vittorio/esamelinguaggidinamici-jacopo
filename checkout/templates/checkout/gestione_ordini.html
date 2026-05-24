@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1></h1>
+    <h2>Lista ordini</h2>
+    <br>
+
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Ordine</th>
+                <th>Fornitore</th>
+                <th>Quantità</th>
+                <th>Email</th>
+                <th>Dettagli Cliente</th>
+                <th>Elimina prodotto</th>
+
+            </tr>
+            </thead>
+            {% for object in ordini_list %}
+                <tr></tr>
+                    <td>{{ object.order }}</td>
+                    <td>{{ object.product.owner }}</td>
+                    <td>{{ object.product.name }}</td>
+                    <td>{{ object.product.quantity }}</td>
+                    <td>{{ object.order.email }}</td>
+                    <td><a href="{% url 'order:order-detail' object.pk  %}" class="btn btn-danger m-1"> Dettagli ordine  </a></td>
+                    <td><a href="{% url 'order:order-delete' object.pk  %}" class="btn btn-danger m-1"> Eliminazione prodotto  </a></td>
+                </tr>
+            {% endfor %}
+             {%  if user.is_authenticated and user.is_client%}
+            <a href="{%  url 'forum:thread-create' %}" class="btn btn-primary">Nuovo thread</a>
+            {%  endif %}
+        </table>
+    </form>
+{% endblock %}

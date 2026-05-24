@@ -1,0 +1,46 @@
+{%  extends 'prodotti_list_base.html' %}
+{%  block list_title  %} Prodotti {% endblock %}
+{% block content_title %}Lista dei prodotti disponibili{% endblock %}
+
+
+{%  block thead  %}
+    <th>Owner</th>
+    <th>name</th>
+    <th>Categoria</th>
+    <th>price</th>
+    <th>image</th>
+    <th>Actions</th>
+{% endblock %}
+
+{% block tbody %}
+{%  for products in object_list %}
+<tr>
+    <td>{{ products.owner }}</td>
+    <td>{{ products.name }}</td>
+    <td>{{ products.categoria }}</td>
+    <td>{{ products.price }}</td>
+    <td><img src="{{products.image.url}}" class="img-fluid"></td>
+    <td>
+        <a href="{% url 'prod:products-detail' products.pk  %}"
+           class="btn btn-primary">detail</a>
+        <a href="{% url 'core:add_cart' products.pk %}" class="btn btn-primary btn-md my-0 p" >Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+            </a>
+        {%  if user.is_authenticated and user.is_owner and products.owner == user.proprietario %}
+            <a href="{% url 'prod:products-update' products.pk %}"
+                 class="btn btn-primary">update</a>
+            <a href="{% url 'prod:products-delete' products.pk %}"
+                 class="btn btn-primary">delete</a>
+        {% endif %}
+    </td>
+</tr>
+{%  endfor %}
+{%  endblock %}
+
+{%  block table_after %} <!-- qui aggiungo dei bottoni con link alle vare funzioni disponibili al sito-->
+    {% if user.is_authenticated and user.is_owner %}
+        <a href="{%  url 'prod:products-create' %} "
+           class="btn btn-primary">New products</a>
+    {% endif %}
+
+{%  endblock %}
