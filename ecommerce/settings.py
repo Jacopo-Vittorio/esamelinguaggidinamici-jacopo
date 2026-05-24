@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'crispy_bootstrap4',
     'crispy_forms',
-    'user_manage.apps.UserManageConfig'
+    'user_manage.apps.UserManageConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -142,3 +144,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CART_SESSION_ID = 'cart'
+
+INTERNAL_IPS = ['127.0.0.1']
