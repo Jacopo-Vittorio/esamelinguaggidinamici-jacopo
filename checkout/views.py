@@ -27,7 +27,10 @@ class OrderCreateView(CreateView):
         cart=Cart(request)
         form= self.form_class(request.POST)
         if form.is_valid():
-            order=form.save()
+            order=form.save(commit=False)
+            if request.user.is_authenticated:
+                order.user = request.user
+            order.save()
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'],
                                          price=item['price'],quantity=item['quantity'])

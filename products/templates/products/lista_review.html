@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block content %}
     <h1></h1>
@@ -27,7 +27,13 @@
             </thead>
             {% for p in lista_rev %}
                 <tr>
-                    <td> <img src="{{ p.prodotto.image.url }}" style="height: 100px; width: 100px"; class="card-img-top" alt="..."></td>
+                    <td>
+                        {% if p.prodotto.image %}
+                            <img src="{{ p.prodotto.image.url }}" style="height: 100px; width: 100px;" class="card-img-top" alt="{{ p.prodotto.name }}">
+                        {% else %}
+                            <img src="{% static 'img/imballotech.png' %}" style="height: 100px; width: 100px; object-fit: contain;" class="card-img-top" alt="Immagine non disponibile">
+                        {% endif %}
+                    </td>
                     <td>{{ p.prodotto.name }}</td>
                     <td>{{ p.comment_name }}</td>
                     <td>{{ p.comment_body }}</td>

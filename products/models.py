@@ -3,6 +3,7 @@ import os
 import random
 from time import timezone
 
+from django.conf import settings
 from django.db import models
 from user_manage.models import User,Owner,Cliente
 # Create your models here.
@@ -47,6 +48,23 @@ class Prodotti(models.Model):
     #c'è la possibilità di andare a sovrascrivere alcune funzioni in base.py
     def __str__(self):
         return f'{self.name}'
+
+
+class SearchHistory(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='search_history',
+        on_delete=models.CASCADE,
+    )
+    query = models.CharField(max_length=255, blank=True)
+    material = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.query or self.material
 
 class IntegerRangeField(models.IntegerField):
     def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):

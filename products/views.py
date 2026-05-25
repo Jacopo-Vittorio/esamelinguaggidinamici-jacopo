@@ -17,8 +17,9 @@ from user_manage.views import OwnerSignUpView
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
-from products.models import Prodotti, Categoria, Review
+from products.models import Prodotti, Categoria, Review, SearchHistory
 from products.forms import ProdottiForm, ReviewForm, SearchForm, ReportForm, Lista_fornitoreForm, Lista_RevForm
+from products.recommendations import get_suggested_products
 from user_manage.models import Owner, Cliente
 from django.conf import settings
 
@@ -162,6 +163,13 @@ class SearchView(ListView):
                 qs = qs.filter(price__gte=min_price)
             if max_price:
                 qs = qs.filter(price__lte=max_price)
+
+            if self.request.user.is_authenticated and (nome or material):
+                SearchHistory.objects.create(
+                    user=self.request.user,
+                    query=nome or '',
+                    material=material or '',
+                )
             return qs.order_by('-price')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -172,6 +180,7 @@ class SearchView(ListView):
             'min_price': self.request.GET.get('min_price'),
             'max_price': self.request.GET.get('max_price'),
         })
+        context['suggested_products'] = get_suggested_products(self.request.user)
         return context
 
 @method_decorator([login_required,owner_required],name='dispatch')

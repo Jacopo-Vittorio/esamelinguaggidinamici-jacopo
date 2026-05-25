@@ -1,11 +1,11 @@
-# CM-Forniture
+# ImballoTech
 
 
 ## 1. Installation (Debian based distributions)
 Install python 3.X & pipenv: `apt install python3 pipenv`<br>
 Change directory: `cd {insert_your_folder}`<br>
-Clone repository: `git clone https://gitlab.com/xerox0000/mc-forniture.git`<br>
-Change directory: `cd mc-forniture`<br>
+Clone repository: `git clone https://github.com/Jacopo-Vittorio/esamelinguaggidinamici-jacopo.git imballotech`<br>
+Change directory: `cd imballotech`<br>
 Attiva  : `pipenv shell ` <br>
 Create virtualenv and install all dependencies: `pipenv install`<br>
 Installa: 'pip install --upgrade django-crispy-forms'
@@ -17,7 +17,7 @@ Installa: 'pip install --upgrade django-crispy-forms'
 
 - Run server on localhost: `python3 manage.py runserver`<br>
   Ora puoi accedere a  http://127.0.0.1:8000 <br>
-- Se tutto è andato a buon fine avrai il sito CM-Forniture davanti 
+- Se tutto è andato a buon fine avrai il sito ImballoTech davanti 
 
 
 ## 3. Used technologies

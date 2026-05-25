@@ -1,9 +1,10 @@
 
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Benvenuti su CM-Forniture</h1>
+    <h1>Benvenuti su ImballoTech</h1>
     <br>
-    <h5>CM-Forniture offre prodotti usa e getta per varie attività </h5>
+    <h5>ImballoTech offre prodotti usa e getta per varie attività </h5>
     <h5> </h5>
     <h5>Trova il prodotto che ti interessa!</h5>
     <br>
@@ -14,7 +15,16 @@
     {% endif %}
 
     <br>
-    <center>
-        {% load static %} <img src="{% static "img/beach.jpg" %}" alt="Buste idee" />
-    </center>
+    {% include 'products/snippets/suggested_carousel.html' with carousel_id='homeSuggestedCarousel' %}
+    <div class="home-image-wrap">
+        <img
+            class="home-image"
+            src="{% static 'img/imballotech.png' %}"
+            width="1254"
+            height="1254"
+            alt="ImballoTech"
+            loading="lazy"
+            decoding="async"
+        />
+    </div>
 {% endblock %}

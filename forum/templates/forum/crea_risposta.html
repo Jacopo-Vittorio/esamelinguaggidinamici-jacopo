@@ -8,9 +8,10 @@
         <h1> Creazione nuova risposta</h1>
 
             {% crispy form%}
+        <p>return to <a href="{% url "forum:discussione" thread.pk %}">Forum</a> </p>
 
     {% else %}
         <h1> Effettua prima il login</h1>
-        <p>return to <a href="{% url "forum:discussione" %}">Forum</a> </p>
+        <p>return to <a href="{% url "forum:discussione" thread.pk %}">Forum</a> </p>
     {% endif %}
 {% endblock %}

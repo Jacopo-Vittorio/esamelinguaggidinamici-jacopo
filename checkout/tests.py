@@ -1,6 +1,8 @@
 from django.test import TestCase
 
 # Create your tests here.
+from django.conf import settings
+
 from checkout.forms import OrderCreateForm
 from checkout.models import Order
 from forum.models import Forum
@@ -36,3 +38,28 @@ class CheckoutFormTest(TestCase):
         }
         form = OrderCreateForm(dati)
         self.assertFalse(form.is_valid())
+
+    def test_OrderCreateView_assigns_logged_user(self):
+        self.client.force_login(user=self.user1)
+        session = self.client.session
+        session[settings.CART_SESSION_ID] = {
+            str(self.prod.pk): {
+                'quantity': 2,
+                'price': str(self.prod.price),
+            }
+        }
+        session.save()
+        dati = {
+            'firs_name': 'Tom',
+            'last_name': 'Bonisoli',
+            'email': 'rimangoio@gmail.com',
+            'address': 'via morlaso',
+            'postal_code': '89800',
+            'city': 'Venezia',
+        }
+
+        response = self.client.post('/order/create/', data=dati)
+
+        self.assertEqual(response.status_code, 200)
+        order = Order.objects.latest('id')
+        self.assertEqual(order.user, self.user1)

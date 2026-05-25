@@ -96,7 +96,7 @@ $(document).ready(function(){
       displaySearching()
       var query = searchInput.val()
       setTimeout(function(){
-        window.location.href='/search/?q=' + query
+        window.location.href='/products/?nome=' + encodeURIComponent(query)
       }, 1000)
       
     }

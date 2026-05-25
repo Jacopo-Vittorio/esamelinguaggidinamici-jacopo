@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from products.models import Prodotti
+from products.recommendations import get_suggested_products
 from .models import Cart
 from .forms import CartAddProductForm
 
@@ -27,4 +28,8 @@ def cart_detail(request):
     cart = Cart(request)
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'override': True})
-    return render(request, 'cart/cart_detail.html', {'cart': cart})
+    return render(
+        request,
+        'cart/cart_detail.html',
+        {'cart': cart, 'suggested_products': get_suggested_products(request.user)}
+    )

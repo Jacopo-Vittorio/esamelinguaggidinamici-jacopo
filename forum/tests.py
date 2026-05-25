@@ -36,7 +36,10 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_AddCommentView(self):
-        Forum.objects.create(fornitore=self.fo1, user=self.cl1, titolo='prova', descrizione='prova', contenuto='prova')
+        self.client.force_login(user=self.user1)
+        response = self.client.get(f'/forum/forum/{self.forum.pk}/creacommento/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'/forum/forum/{self.forum.pk}/discussione/')
 
 class ForumFormTest(TestCase):
     #evito di inserire i dati con setUpTestData

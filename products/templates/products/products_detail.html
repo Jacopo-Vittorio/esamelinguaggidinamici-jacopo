@@ -1,7 +1,7 @@
 
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}Dettagli di {{ object.name }}{% endblock %}
+{% load crispy_forms_tags static %}
+{% block title %}Dettagli di {{ product.name }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -10,11 +10,15 @@
             <div class="col-md-8">
                 <a href="{% url 'prod:products-category' %}" class="btn btn-primary mt-2">Back</a>
                 <div class="card m-5 p-2" style="width: 25rem;">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'img/imballotech.png' %}" class="card-img-top" style="object-fit: contain;" alt="Immagine non disponibile">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title m-1"><b>Name:</b> {{ product.name }}</h5>
                         <h4 class="card-subtitle m-1"><b>Price:</b> {{product.price }}€</h4>
-                        <p style="font-size: 14px;" class="btn btn-warning m-1 p-1">{{ product.category.nome }}</p>
+                        <p style="font-size: 14px;" class="btn btn-warning m-1 p-1">{{ product.categoria.nome }}</p>
                         <hr>
                         <p style="font-size: 15px;" class="card-text mt-1">Dimensione: {{ product.dimensione }} cm</p>
                         <p style="font-size: 13px;" class="cart-text mt-1">Materiale : {{ product.tipo_materiale }}</p>
@@ -69,7 +73,11 @@
             <div class="row">
                 {% for product in related %}
                     <div class="card m-3 p-2" style="width: 13rem; height: 25rem; box-shadow: 4px 4px #c291fa; border-radius: 25px 15px;">
-                        <img src="{{ product.image.url }}" style="height: 170px; width: 170px;"  class="card-img-top" alt="...">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" style="height: 170px; width: 170px;" class="card-img-top" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/imballotech.png' %}" style="height: 170px; width: 170px; object-fit: contain;" class="card-img-top" alt="Immagine non disponibile">
+                        {% endif %}
                         <div class="card-body">
                             <h4 style="font-size: 12px;" class="card-title mt-1">{{ product.name }}</h4>
                             <h3 style="color: rgb(16, 52, 107)" class="card-subtitle mt-1">{{ product.price }}€</h3>

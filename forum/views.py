@@ -53,12 +53,17 @@ class AddComment(CreateView):
     initial = {'key':'value'}
     template_name = 'forum/crea_risposta.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['thread'] = get_object_or_404(Forum, pk=self.kwargs.get('pk'))
+        return context
+
     def post(self, request,pk,*args, **kwargs):
         if request.user.is_client == True:
             user = Cliente.objects.get(user__username=request.user.username)
         elif request.user.is_owner == True:
             user = Owner.objects.get(user__username=request.user.username)
-        object = Forum.objects.get(id=pk)
+        object = get_object_or_404(Forum, id=pk)
         form = self.form_class(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
@@ -67,7 +72,7 @@ class AddComment(CreateView):
             comment.save()
             return redirect('forum:discussione', pk=object.pk)
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'thread': object})
 
 
 

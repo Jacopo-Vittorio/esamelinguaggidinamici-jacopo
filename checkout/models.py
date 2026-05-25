@@ -1,10 +1,19 @@
 from django.db import models
 
 # Create your models here.
+from django.conf import settings
+
 from products.models import Prodotti
 
 
 class Order(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='orders',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     firs_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()

@@ -1,4 +1,5 @@
 {%  extends 'prodotti_list_base.html' %}
+{% load static %}
 {%  block list_title  %} Prodotti {% endblock %}
 {% block content_title %}Lista dei prodotti disponibili{% endblock %}
 
@@ -19,13 +20,24 @@
     <td>{{ products.name }}</td>
     <td>{{ products.categoria }}</td>
     <td>{{ products.price }}</td>
-    <td><img src="{{products.image.url}}" class="img-fluid"></td>
+    <td>
+        {% if products.image %}
+            <img src="{{ products.image.url }}" class="img-fluid" alt="{{ products.name }}">
+        {% else %}
+            <img src="{% static 'img/imballotech.png' %}" class="img-fluid" alt="Immagine non disponibile">
+        {% endif %}
+    </td>
     <td>
         <a href="{% url 'prod:products-detail' products.pk  %}"
            class="btn btn-primary">detail</a>
-        <a href="{% url 'core:add_cart' products.pk %}" class="btn btn-primary btn-md my-0 p" >Add to cart
+        <form action="{% url 'cart:cart_add' products.pk %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="update" value="False">
+            <button type="submit" class="btn btn-primary btn-md my-0 p">Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
+            </button>
+        </form>
         {%  if user.is_authenticated and user.is_owner and products.owner == user.proprietario %}
             <a href="{% url 'prod:products-update' products.pk %}"
                  class="btn btn-primary">update</a>
@@ -39,7 +51,7 @@
 
 {%  block table_after %} <!-- qui aggiungo dei bottoni con link alle vare funzioni disponibili al sito-->
     {% if user.is_authenticated and user.is_owner %}
-        <a href="{%  url 'prod:products-create' %} "
+        <a href="{%  url 'prod:products-create' %}"
            class="btn btn-primary">New products</a>
     {% endif %}
 
